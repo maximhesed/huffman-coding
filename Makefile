@@ -1,18 +1,17 @@
 CC=gcc
 
-CFLAGS=-c -Wall -g -O0
+CFLAGS=-Wall -g
 LDFLAGS=-lncurses
 
-OBJS=main.o
-DEPS=node.h
+OBJS=main.o node.c
 
 PROGNAME=prog
 
-all: $(OBJS) $(DEPS)
+all: $(OBJS)
 	$(CC) $(LDFLAGS) -o $(PROGNAME) $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 .PHONY: clean
 clean:
