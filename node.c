@@ -40,6 +40,7 @@ void n_print(struct node *n)
 	printf("%s - %d\n", n->data.s, n->data.f);
 }
 
+/* TODO: make simpler */
 void n_sort(struct node **n, unsigned int len)
 {
 	bool sorted = false;
@@ -82,6 +83,7 @@ struct node * n_merge(struct node *n1, struct node *n2)
 	return root;
 }
 
+/* TODO: make simpler */
 void n_shift(struct node **n, int pos, unsigned int len)
 {
 	unsigned int i;
@@ -107,6 +109,7 @@ void n_set(struct node *n, char *s, int f)
 	n->data.f = f;
 }
 
+/* TODO: remove arr and offset */
 void t_get_codes(struct node *n, struct code *code, int *arr,
 						int offset, int *k)
 {

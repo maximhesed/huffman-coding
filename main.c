@@ -58,27 +58,18 @@ int main(int argc, char *argv[])
 	while (tp_q > 1) {
 		const int offset = 0;
 
-		/* print nodes */
-		for (j = 0; j < tp_q; j++)
-			n_print(n[j]);
-
-		printf("\n");
-
 		n[offset] = n_merge(n[offset], n[offset + 1]);
 		n_shift(n, 1, tp_q);
+		n_sort(n, tp_q - 1);
+
 		tp_q--;
-
-		n_sort(n, tp_q);
 	}
-
-	/* it's created tree */
-	n_print(n[0]);
-	printf("\n");
 
 	struct code *code = calloc(sizeof(struct code), nr_len);
 
 	int k = 0;
 	int *arr = calloc(sizeof(int), 256);
+
 	t_get_codes(*n, code, arr, 0, &k);
 
 	/* print codes */
@@ -113,7 +104,8 @@ int main(int argc, char *argv[])
 	endwin();*/
 
 	t_free(*n);
-
+	
+	/* TODO: c_free(code); */
 	for (i = 0; i < nr_len; i++)
 		free(code[i].v);
 
