@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	char *text = calloc(sizeof(char), len + 1);
 	strcpy(text, argv[1]);
 
-	struct node **n = malloc(sizeof(struct node));
+	struct node **n = NULL;
 
 	unsigned int i;
 	unsigned int j;
@@ -111,15 +111,16 @@ int main(int argc, char *argv[])
 
 	getch();
 	endwin();*/
-	
-	n_free(*n);
-	free(text);
+
+	t_free(*n);
 
 	for (i = 0; i < nr_len; i++)
 		free(code[i].v);
 
 	free(code);
 
+	free(n);
+	free(text);
 	free(arr);
 
 	return 0;

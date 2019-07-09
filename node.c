@@ -95,6 +95,18 @@ void n_shift(struct node **n, int pos, unsigned int len)
 	}
 }
 
+bool n_is_leaf(struct node *n)
+{
+	return !n->left | !n->right;
+}
+
+void n_set(struct node *n, char *s, int f)
+{
+	n->data.s = realloc(n->data.s, sizeof(char) * (strlen(s) + 1));
+	strcpy(n->data.s, s);
+	n->data.f = f;
+}
+
 void t_get_codes(struct node *n, struct code *code, int *arr,
 						int offset, int *k)
 {
@@ -122,19 +134,15 @@ void t_get_codes(struct node *n, struct code *code, int *arr,
 	}
 }
 
-bool n_is_leaf(struct node *n)
+void t_free(struct node *n)
 {
-	if (strlen(n->data.s) == 1)
-		return true;
+	if (n == NULL)
+		return;
 
-	return false;
-}
+	t_free(n->left);
+	t_free(n->right);
 
-void n_set(struct node *n, char *s, int f)
-{
-	n->data.s = realloc(n->data.s, sizeof(char) * (strlen(s) + 1));
-	strcpy(n->data.s, s);
-	n->data.f = f;
+	n_free(n);
 }
 
 /*void t_print(struct node *n, int y, int x, bool codes)

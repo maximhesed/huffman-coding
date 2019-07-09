@@ -26,10 +26,11 @@ void n_print(struct node *n);
 void n_sort(struct node **n, unsigned int len);
 struct node * n_merge(struct node *n1, struct node *n2);
 void n_shift(struct node **n, int pos, unsigned int len);
-void t_get_codes(struct node *n, struct code *code, int *arr,
-					int offset, int *k);
 bool n_is_leaf(struct node *n);
 void n_set(struct node *n, char *s, int f);
+void t_get_codes(struct node *n, struct code *code, int *arr,
+					int offset, int *k);
+void t_free(struct node *n);
 /* void t_print(struct node *n, int y, int x, bool codes); */
 
 #endif /* NODE_H */
