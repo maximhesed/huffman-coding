@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 	endwin();*/
 
 	t_free(*n);
-	
+
 	/* TODO: c_free(code); */
 	for (i = 0; i < nr_len; i++)
 		free(code[i].v);

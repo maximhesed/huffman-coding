@@ -40,7 +40,6 @@ void n_print(struct node *n)
 	printf("%s - %d\n", n->data.s, n->data.f);
 }
 
-/* TODO: make simpler */
 void n_sort(struct node **n, unsigned int len)
 {
 	bool sorted = false;
@@ -83,18 +82,15 @@ struct node * n_merge(struct node *n1, struct node *n2)
 	return root;
 }
 
-/* TODO: make simpler */
 void n_shift(struct node **n, int pos, unsigned int len)
 {
 	unsigned int i;
+	struct node *buff = n[pos];
 
-	for (i = pos; i < len - 1; i++) {
-		struct node *buff;
-
-		buff = n[i];
+	for (i = pos; i < len - 1; i++)
 		n[i] = n[i + 1];
-		n[i + 1] = buff;
-	}
+
+	n[len - 1] = buff;
 }
 
 bool n_is_leaf(struct node *n)
