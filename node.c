@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-/* #include <ncurses.h> */
-
 #include "node.h"
 
 struct node * n_alloc(char *s, int f)
@@ -105,32 +99,35 @@ void n_set(struct node *n, char *s, int f)
 	n->data.f = f;
 }
 
-/* TODO: remove arr and offset */
-void t_get_codes(struct node *n, struct code *code, int *arr,
-						int offset, int *k)
+/* TODO: crop excess bytes */
+void t_get_codes(struct node *n, struct c_block *c_bl, int index, int h)
 {
 	if (n->left != NULL) {
-		arr[offset] = 0;
-		t_get_codes(n->left, code, arr, offset + 1, k);
+		c_bl->b[index] = 0;
+		t_get_codes(n->left, c_bl, index + 1, h);
 	}
 
 	if (n->right != NULL) {
-		arr[offset] = 1;
-		t_get_codes(n->right, code, arr, offset + 1, k);
+		c_bl->b[index] = 1;
+		t_get_codes(n->right, c_bl, index + 1, h);
 	}
 
-	if (n_is_leaf(n)) {
-		int i;
+	if (n_is_leaf(n))
+		c_l_append(c_bl->c_l, n->data.s[0], c_bl->b, h);
+}
 
-		code[*k].c = n->data.s[0];
-		code[*k].v = calloc(sizeof(int), offset);
-		code[*k].len = offset;
+int t_get_height(struct node *root)
+{
+	if (root == NULL)
+		return 0;
 
-		for (i = 0; i < offset; i++)
-			code[*k].v[i] = arr[i];
+	int h_l = t_get_height(root->left);
+	int h_r = t_get_height(root->right);
 
-		(*k)++;
-	}
+	if (h_l > h_r)
+		return h_l + 1;
+	else
+		return h_r + 1;
 }
 
 void t_free(struct node *n)

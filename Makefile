@@ -3,7 +3,7 @@ CC=gcc
 CFLAGS=-Wall -g
 LDFLAGS=-lncurses
 
-OBJS=main.o node.c
+OBJS=main.o node.c code.c
 
 PROGNAME=prog
 

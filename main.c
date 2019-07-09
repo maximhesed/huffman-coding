@@ -5,6 +5,7 @@
 /* #include <ncurses.h> */
 
 #include "node.h"
+#include "code.h"
 
 int main(int argc, char *argv[])
 {
@@ -65,22 +66,13 @@ int main(int argc, char *argv[])
 		tp_q--;
 	}
 
-	struct code *code = calloc(sizeof(struct code), nr_len);
+	int h = t_get_height(*n) - 1;
+	struct c_block *c_bl = c_bl_alloc(h);
 
-	int k = 0;
-	int *arr = calloc(sizeof(int), 256);
-
-	t_get_codes(*n, code, arr, 0, &k);
+	t_get_codes(*n, c_bl, 0, h);
 
 	/* print codes */
-	for (i = 0; i < nr_len; i++) {
-		printf("%c: ", code[i].c);
-
-		for (j = 0; j < code[i].len; j++)
-			printf("%d", code[i].v[j]);
-
-		printf("\n");
-	}
+	c_l_print(c_bl->c_l, h);
 
 	/*initscr();
 	curs_set(0);
@@ -103,17 +95,12 @@ int main(int argc, char *argv[])
 	getch();
 	endwin();*/
 
-	t_free(*n);
-
-	/* TODO: c_free(code); */
-	for (i = 0; i < nr_len; i++)
-		free(code[i].v);
-
-	free(code);
-
-	free(n);
 	free(text);
-	free(arr);
+
+	t_free(*n);
+	free(n);
+
+	c_bl_free(c_bl);
 
 	return 0;
 }
