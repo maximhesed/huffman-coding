@@ -95,7 +95,7 @@ void n_shift(struct node **n, int pos, unsigned int len)
 
 bool n_is_leaf(struct node *n)
 {
-	return !n->left | !n->right;
+	return !n->left | !n->right; /* there are no rays */
 }
 
 void n_set(struct node *n, char *s, int f)
