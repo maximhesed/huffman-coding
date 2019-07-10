@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-/* #include <ncurses.h> */
 
 #include "node.h"
 #include "code.h"
@@ -73,27 +72,6 @@ int main(int argc, char *argv[])
 
 	/* print codes */
 	c_l_print(c_bl->c_l, h);
-
-	/*initscr();
-	curs_set(0);
-	noecho();
-
-	if (!has_colors()) {
-		colors_support = false;
-		printw("Your terminal does not support colors.\n");
-		getch();
-	} else {
-		colors_support = true;
-		start_color();
-		init_pair(1, COLOR_GREEN, COLOR_BLACK);
-	}*/
-
-	/* i don't know what else */
-	/*int x_shift = strlen(n[0]->data.s) * 2;
-	t_print(*n, 0, x_shift, true);
-
-	getch();
-	endwin();*/
 
 	free(text);
 

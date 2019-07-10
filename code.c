@@ -29,6 +29,7 @@ struct c_list * c_l_alloc(int h)
 	return c_l;
 }
 
+/* somewhat awful... */
 void c_l_append(struct c_list *head, char c, char *code, int h)
 {
 	if (head->c == 0)

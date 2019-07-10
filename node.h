@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-/* #include <ncurses.h> */
 
 #include "code.h"
 
@@ -31,9 +30,9 @@ void          n_shift(struct node **n, int pos, unsigned int len);
 bool          n_is_leaf(struct node *n);
 void          n_set(struct node *n, char *s, int f);
 
-void t_get_codes(struct node *n, struct c_block *c_bl, int index, int h);
+/* TODO: move to tree module */
+void t_get_codes(struct node *root, struct c_block *c_bl, int index, int h);
 int  t_get_height(struct node *root);
-void t_free(struct node *n);
-/* void t_print(struct node *n, int y, int x, bool codes); */
+void t_free(struct node *root);
 
 #endif /* NODE_H */
