@@ -99,16 +99,15 @@ void n_set(struct node *n, char *s, int f)
 	n->data.f = f;
 }
 
-/* TODO: crop excess bytes */
 void t_get_codes(struct node *n, struct c_block *c_bl, int index, int h)
 {
 	if (n->left != NULL) {
-		c_bl->b[index] = 0;
+		c_bl->b[index] = '0';
 		t_get_codes(n->left, c_bl, index + 1, h);
 	}
 
 	if (n->right != NULL) {
-		c_bl->b[index] = 1;
+		c_bl->b[index] = '1';
 		t_get_codes(n->right, c_bl, index + 1, h);
 	}
 
@@ -116,6 +115,7 @@ void t_get_codes(struct node *n, struct c_block *c_bl, int index, int h)
 		c_l_append(c_bl->c_l, n->data.s[0], c_bl->b, h);
 }
 
+/* TODO: make simpler */
 int t_get_height(struct node *root)
 {
 	if (root == NULL)
