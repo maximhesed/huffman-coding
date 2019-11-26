@@ -8,77 +8,81 @@
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2) {
-		printf("type --help for more information\n");
-		return -1;
-	}
+    struct node **n = NULL;
+    unsigned int i;
+    unsigned nr_len = 0; /* not repeat length */
+    bool repeat;
+    unsigned int tp_q; /* tree's pieces quantity */
+    int h;
+    struct c_block *c_bl = NULL;
+    char *f_str = NULL; /* file, contains source text */
+    FILE *f = NULL;
+    int c;
 
-	if (argc == 2 && strcmp(argv[1], "--help") == 0) {
-		printf("usage: ./prog <text>\n");
-		return -1;
-	}
+    if (argc != 2) {
+        fprintf(stderr, "usage: %s fname\n", argv[0]);
 
-	unsigned int len = strlen(argv[1]);
-	char *text = calloc(sizeof(char), len + 1);
-	strcpy(text, argv[1]);
+        return -1;
+    }
 
-	struct node **n = NULL;
+    f_str = strdup(argv[1]);
 
-	unsigned int i;
-	unsigned int j;
-	unsigned int nr_len = 0; /* not repeat length */
-	bool repeat;
+    f = fopen(f_str, "r");
 
-	for (i = 0; i < len; i++) {
-		repeat = false;
+    while ((c = fgetc(f)) != EOF) {
+        if (c == '\n')
+            continue;
 
-		for (j = 0; j < nr_len; j++) {
-			if (n[j]->data.s[0] == text[i]) {
-				repeat = true;
-				n[j]->data.f++;
-			}
-		}
+        repeat = false;
 
-		if (!repeat) {
-			char text_buff[2] = {
-				text[i], '\0'
-			};
+        for (i = 0; i < nr_len; i++) {
+            if (n[i]->data.s[0] == c) {
+                repeat = true;
 
-			nr_len++;
-			n = realloc(n, sizeof(struct node *) * nr_len);
-			n[nr_len - 1] = n_alloc(text_buff, 1);
-		}
-	}
+                n[i]->data.f++;
+            }
+        }
 
-	n_sort(n, nr_len);
+        if (!repeat) {
+            char text_buff[2] = {
+                c, '\0'
+            };
 
-	/* create tree */
-	unsigned int tp_q = nr_len; /* tree's pieces quantity */
+            nr_len++;
+            n = realloc(n, sizeof(struct node *) * nr_len);
+            n[nr_len - 1] = n_alloc(text_buff, 1);
+        }
+    }
 
-	while (tp_q > 1) {
-		const int offset = 0;
+    n_sort(n, nr_len);
 
-		n[offset] = n_merge(n[offset], n[offset + 1]);
-		n_shift(n, 1, tp_q);
-		n_sort(n, tp_q - 1);
+    /* create tree */
+    tp_q = nr_len;
 
-		tp_q--;
-	}
+    while (tp_q > 1) {
+        n[0] = n_merge(n[0], n[0 + 1]);
+        n_shift(n, 1, tp_q);
+        n_sort(n, tp_q - 1);
 
-	int h = t_get_height(*n) - 1;
-	struct c_block *c_bl = c_bl_alloc(h);
+        tp_q--;
+    }
 
-	t_get_codes(*n, c_bl, 0, h);
+    h = t_get_height(*n) - 1;
+    c_bl = c_bl_alloc(h);
 
-	/* print codes */
-	c_l_print(c_bl->c_l, h);
+    t_get_codes(*n, c_bl, 0, h);
 
-	free(text);
+    /* print codes */
+    c_l_print(c_bl->c_l, h);
 
-	t_free(*n);
-	free(n);
+    /* free */
+    free(f_str);
+    fclose(f);
 
-	c_bl_free(c_bl);
+    t_free(*n);
+    free(n);
 
-	return 0;
+    c_bl_free(c_bl);
+
+    return 0;
 }
