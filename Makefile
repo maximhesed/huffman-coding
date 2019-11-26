@@ -1,9 +1,9 @@
 CC=gcc
 
 CFLAGS=-Wall -g
-LDFLAGS=-lncurses
+LDFLAGS=-g -lncurses
 
-OBJS=main.o node.c code.c
+OBJS=main.o node.c code.c tree.c
 
 PROGNAME=prog
 

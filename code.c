@@ -1,18 +1,18 @@
 #include "code.h"
 
-struct c_block * c_bl_alloc(int h)
+struct c_block * c_bl_alloc(int size)
 {
     struct c_block *c_bl = malloc(sizeof(struct c_block));
 
-    c_bl->b = calloc(sizeof(char), h + 1);
-    c_bl->c_l = c_l_alloc(h);
+    c_bl->bytes = calloc(sizeof(char), size + 1);
+    c_bl->c_l = c_l_alloc(size);
 
     return c_bl;
 }
 
 void c_bl_free(struct c_block *c_bl)
 {
-    free(c_bl->b);
+    free(c_bl->bytes);
     c_l_free(c_bl->c_l);
 
     free(c_bl);
@@ -30,25 +30,25 @@ struct c_list * c_l_alloc(int h)
 }
 
 /* somewhat awful... */
-void c_l_append(struct c_list *head, char c, char *code, int h)
+void c_l_append(struct c_list *head, char c, char *code, int n)
 {
     if (head->c == 0)
-        c_l_push(head, c, code, h);
+        c_l_push(head, c, code, n);
     else {
         struct c_list *tmp = head;
 
         while (tmp->next != NULL)
             tmp = tmp->next;
 
-        tmp->next = c_l_alloc(h);
-        c_l_push(tmp->next, c, code, h);
+        tmp->next = c_l_alloc(n);
+        c_l_push(tmp->next, c, code, n);
     }
 }
 
-void c_l_push(struct c_list *list, char c, char *code, int h)
+void c_l_push(struct c_list *list, char c, char *code, int n)
 {
     list->c = c;
-    strcpy(list->code, code);
+    strncpy(list->code, code, n);
 }
 
 void c_l_print(struct c_list *head, int h)

@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ncurses.h>
 
 #include "node.h"
 #include "code.h"
+#include "tree.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +20,8 @@ int main(int argc, char *argv[])
     char *f_str = NULL; /* file, contains source text */
     FILE *f = NULL;
     int c;
+    /*int x_shift;
+    SCREEN *scr = NULL;*/
 
     if (argc != 2) {
         fprintf(stderr, "usage: %s fname\n", argv[0]);
@@ -56,6 +60,10 @@ int main(int argc, char *argv[])
 
     n_sort(n, nr_len);
 
+    /* print sorted frequencies */
+    /*for (i = 0; i < nr_len; i++)
+        printf("'%c'.freq = %d\n", n[i]->data.s[0], n[i]->data.f);*/
+
     /* create tree */
     tp_q = nr_len;
 
@@ -74,6 +82,21 @@ int main(int argc, char *argv[])
 
     /* print codes */
     c_l_print(c_bl->c_l, h);
+
+    /* visualise tree */
+    /*scr = newterm(NULL, stdout, stdin);
+
+    noecho();
+    curs_set(0);
+
+    x_shift = strlen(n[0]->data.s) * 2;
+
+    t_print(*n, 0, x_shift, true);
+
+    getch();
+
+    endwin();
+    delscreen(scr);*/
 
     /* free */
     free(f_str);
