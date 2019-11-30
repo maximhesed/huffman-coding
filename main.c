@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
     char *f_str = NULL; /* file, contains source text */
     FILE *f = NULL;
     int c;
-    /*int x_shift;
-    SCREEN *scr = NULL;*/
 
     if (argc != 2) {
         fprintf(stderr, "usage: %s fname\n", argv[0]);
@@ -32,6 +30,13 @@ int main(int argc, char *argv[])
     f_str = strdup(argv[1]);
 
     f = fopen(f_str, "r");
+    if (!f) {
+        fprintf(stderr, "couldn't open file \"%s\"\n", f_str);
+
+        free(f_str);
+
+        return -1;
+    }
 
     while ((c = fgetc(f)) != EOF) {
         if (c == '\n')
@@ -60,10 +65,6 @@ int main(int argc, char *argv[])
 
     n_sort(n, nr_len);
 
-    /* print sorted frequencies */
-    /*for (i = 0; i < nr_len; i++)
-        printf("'%c'.freq = %d\n", n[i]->data.s[0], n[i]->data.f);*/
-
     /* create tree */
     tp_q = nr_len;
 
@@ -75,28 +76,17 @@ int main(int argc, char *argv[])
         tp_q--;
     }
 
+    /* print sorted frequencies */
+    /*for (i = 0; i < nr_len; i++)
+        printf("'%c'.freq = %d\n", n[i]->data.s[0], n[i]->data.f);*/
+
     h = t_get_height(*n) - 1;
     c_bl = c_bl_alloc(h);
 
     t_get_codes(*n, c_bl, 0, h);
 
     /* print codes */
-    c_l_print(c_bl->c_l, h);
-
-    /* visualise tree */
-    /*scr = newterm(NULL, stdout, stdin);
-
-    noecho();
-    curs_set(0);
-
-    x_shift = strlen(n[0]->data.s) * 2;
-
-    t_print(*n, 0, x_shift, true);
-
-    getch();
-
-    endwin();
-    delscreen(scr);*/
+    c_l_print(c_bl->c_l, h, false);
 
     /* free */
     free(f_str);

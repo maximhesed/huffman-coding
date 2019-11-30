@@ -14,16 +14,43 @@ void t_get_codes(struct node *root, struct c_block *c_bl, int index, int h)
 {
     if (root->left != NULL) {
         c_bl->bytes[index] = '0';
+
         t_get_codes(root->left, c_bl, index + 1, h);
     }
 
     if (root->right != NULL) {
         c_bl->bytes[index] = '1';
+
         t_get_codes(root->right, c_bl, index + 1, h);
     }
 
-    if (n_is_leaf(root))
-        c_l_append(c_bl->c_l, root->data.s[0], c_bl->bytes, index);
+    if (n_is_leaf(root)) {
+        /*   abcd
+         *  /    \
+         * a     bcd
+         *      /   \
+         *     b     cd
+         *          /  \
+         *         c    d <- let's say, we are here
+         *
+         * 'd' has code 111. I.e., c_bl->bytes = "111".
+         *
+         * root->data.s[0] is 'd';
+         * root->data.f is frequency of 'd'.
+         *
+         * Append it into the c_bl->c_l, including 'd' code. */
+        struct c_data *data = malloc(sizeof(struct c_data));
+
+        data->c = root->data.s[0];
+        data->f = root->data.f;
+        data->code = calloc(index + 1, sizeof(char));
+        strncpy(data->code, c_bl->bytes, index);
+
+        c_l_append(c_bl->c_l, data, index);
+
+        free(data->code);
+        free(data);
+    }
 }
 
 int t_get_height(struct node *root)

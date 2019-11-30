@@ -34,7 +34,6 @@ void n_print(struct node *n)
     printf("%s - %d\n", n->data.s, n->data.f);
 }
 
-/* TODO: try quick sort */
 void n_sort(struct node **n, unsigned int len)
 {
     bool sorted;
