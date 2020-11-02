@@ -8,7 +8,7 @@ static void c_l_sort(struct c_list *head)
     struct c_list *curr;
     struct c_list *lptr = NULL;
 
-    if (head == NULL)
+    if (!head)
         return;
 
     do {
@@ -30,18 +30,18 @@ static void c_l_sort(struct c_list *head)
         }
 
         lptr = curr;
-    } while (!sorted);
+    }
+    while (!sorted);
 }
 
 struct c_block * c_bl_alloc(int h)
 {
     struct c_block *c_bl = malloc(sizeof(struct c_block));
 
-    /* (size + 1) is tree height - max code length in the tree.
-     * It is needed, that don't do realloc every time in
-     * t_get_codes().
+    /* (size + 1) is a tree height (a max code length in the tree).
+     * It's needed, that don't do realloc every time in the t_get_codes().
      *
-     * Only one c_bl->bytes is used, during all tree traversal. */
+     * Only one c_bl->bytes is used, during all a tree traversal. */
     c_bl->bytes = calloc(sizeof(char), h + 1);
 
     c_bl->c_l = c_l_alloc();
@@ -71,12 +71,11 @@ struct c_list * c_l_alloc(void)
     return c_l;
 }
 
-/* somewhat awful... */
-void c_l_append(struct c_list *head, struct c_data *data, int n)
+void c_l_append(struct c_list *head, struct c_data *data)
 {
     struct c_list *tmp;
 
-    if (head->data->c == 0)
+    if (!head->data->c)
         c_l_push(head, data);
     else {
         tmp = head;
@@ -98,18 +97,18 @@ void c_l_push(struct c_list *list, struct c_data *data)
 
 void c_l_print(struct c_list *head, int h, bool debug)
 {
-    /* sort codes by frequency */
+    /* Sort a codes by frequency. */
     c_l_sort(head);
 
     if (debug)
-        printf("%c: %s (f: %d; w: %d)\n",
+        printf("%c: %s (f: %d; w: %lu)\n",
             head->data->c, head->data->code, head->data->f,
             head->data->f * CHAR_LENGTH - head->data->f *
                 strlen(head->data->code));
     else
         printf("%c: %s\n", head->data->c, head->data->code);
 
-    if (head->next != NULL)
+    if (head->next)
         c_l_print(head->next, h, debug);
 }
 
@@ -117,7 +116,7 @@ void c_l_free(struct c_list *head)
 {
     struct c_list *tmp;
 
-    while (head != NULL) {
+    while (head) {
         tmp = head;
         head = head->next;
 

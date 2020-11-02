@@ -1,18 +1,28 @@
-CC=gcc
+cflags = -Wall -Wextra -Iinclude -g
+ldeps  = -g -lncurses
 
-CFLAGS=-Wall -g
-LDFLAGS=-g -lncurses
+srcs_dir = src
+objs_dir = obj
+bin_dir  = bin
 
-OBJS=main.o node.c code.c tree.c
+srcs = $(addprefix $(srcs_dir)/,main.c node.c code.c tree.c)
+objs = $(srcs:$(srcs_dir)/%.c=$(objs_dir)/%.o)
 
-PROGNAME=prog
+.PHONY: all
+all: $(bin_dir)/prog
 
-all: $(OBJS)
-	$(CC) $(LDFLAGS) -o $(PROGNAME) $^
+$(bin_dir)/prog: $(objs) | $(bin_dir)
+	@gcc $(ldeps) -o $@ $^
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $^ -o $@
+$(objs_dir)/%.o: $(srcs_dir)/%.c | $(objs_dir)
+	@gcc $(cflags) -c $< -o $@
+
+$(objs_dir):
+	@[ -d $(objs_dir) ] || mkdir $(objs_dir)
+
+$(bin_dir):
+	@[ -d $(bin_dir) ] || mkdir $(bin_dir)
 
 .PHONY: clean
 clean:
-	rm -f *.o $(PROGNAME)
+	@rm -rf $(objs_dir) $(bin_dir)

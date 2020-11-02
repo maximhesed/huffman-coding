@@ -28,7 +28,7 @@ struct c_block * c_bl_alloc(int h);
 void c_bl_free(struct c_block *c_bl);
 
 struct c_list * c_l_alloc(void);
-void c_l_append(struct c_list *head, struct c_data *data, int n);
+void c_l_append(struct c_list *head, struct c_data *data);
 void c_l_push(struct c_list *list, struct c_data *data);
 void c_l_print(struct c_list *head, int h, bool debug);
 void c_l_free(struct c_list *head);
